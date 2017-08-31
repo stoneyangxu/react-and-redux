@@ -4,8 +4,8 @@ import React from 'react';
 import {Button, Col, Row, Tag} from "antd";
 
 type Props = {
-  initValue: number,
-  onValueChanged: func
+  initValue: string,
+  onValueChanged: Function
 }
 
 class ClickCounter extends React.Component<Props> {
@@ -34,7 +34,7 @@ class ClickCounter extends React.Component<Props> {
     })
   }
 
-  updateValue(isIncrease) {
+  updateValue(isIncrease: boolean) {
     const preValue = this.state.count
     const nextValue = isIncrease ? preValue + 1 : preValue - 1
 

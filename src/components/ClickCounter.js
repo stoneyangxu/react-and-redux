@@ -1,12 +1,11 @@
-import React from 'react';
-import store from "../redux/Store";
+import React, {PropTypes} from 'react';
 import * as CounterActions from '../redux/CounterActions'
 import Counter from './Counter'
 
 class ClickCounter extends React.Component {
 
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
     this.state = {
       count: this.getOwnState()
     }
@@ -16,7 +15,7 @@ class ClickCounter extends React.Component {
   }
 
   getOwnState() {
-    return store.getState()[this.props.caption]
+    return this.context.store.getState()[this.props.caption]
   }
 
   onChange() {
@@ -26,19 +25,19 @@ class ClickCounter extends React.Component {
   }
 
   componentDidMount() {
-    store.subscribe(this.onChange)
+    this.context.store.subscribe(this.onChange)
   }
 
   componentWillUnmount() {
-    store.unsubscribe(this.onChange)
+    this.context.store.unsubscribe(this.onChange)
   }
 
   increase() {
-    store.dispatch(CounterActions.increment(this.props.caption))
+    this.context.store.dispatch(CounterActions.increment(this.props.caption))
   }
 
   decrease() {
-    store.dispatch(CounterActions.decrement(this.props.caption))
+    this.context.store.dispatch(CounterActions.decrement(this.props.caption))
   }
 
 
@@ -50,7 +49,8 @@ class ClickCounter extends React.Component {
   }
 }
 
-ClickCounter.defaultProps = {
-  initValue: 0
-};
+ClickCounter.contextTypes = {
+  store: PropTypes.object
+}
+
 export default ClickCounter;

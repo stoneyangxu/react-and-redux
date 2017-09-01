@@ -1,13 +1,10 @@
-import React from 'react';
-import {Card} from "antd";
-import ClickCounter from "./ClickCounter";
-import store from "../redux/Store";
+import React, {PropTypes} from 'react';
 import Summary from './Summary'
 
 class CounterPanel extends React.Component {
 
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
 
     this.state = {
       sum: this.getOwnState()
@@ -16,7 +13,7 @@ class CounterPanel extends React.Component {
   }
 
   getOwnState() {
-    const counterValues = store.getState()
+    const counterValues = this.context.store.getState()
     let summary = 0;
 
     for (const key in counterValues) {
@@ -29,11 +26,11 @@ class CounterPanel extends React.Component {
   }
 
   componentDidMount() {
-    store.subscribe(this.updateValue)
+    this.context.store.subscribe(this.updateValue)
   }
 
   componentWillUnmount() {
-    store.unsubscribe(this.updateValue)
+    this.context.store.unsubscribe(this.updateValue)
   }
 
   updateValue() {
@@ -47,6 +44,11 @@ class CounterPanel extends React.Component {
       <Summary sum={this.state.sum} />
     )
   }
+}
+
+
+CounterPanel.contextTypes = {
+  store: PropTypes.object
 }
 
 export default CounterPanel;

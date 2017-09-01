@@ -1,15 +1,39 @@
 import React from 'react'
-import {Card} from 'antd'
-import ClickCounter from './ClickCounter'
+import {connect} from 'react-redux'
 
-export default function({sum}) {
+const Summary = function({sum}) {
   return (
     <div>
-      <Card title={sum} bordered={false} style={{width: 300}}>
-        <ClickCounter caption="first"/>
-        <ClickCounter caption="second"/>
-        <ClickCounter caption="third"/>
-      </Card>
+      <hr />
+      <span>{sum}</span>
     </div>
   )
 }
+
+
+const computeSum = (counterValues) => {
+  let summary = 0;
+
+  for (const key in counterValues) {
+    if (counterValues.hasOwnProperty(key)) {
+      summary += counterValues[key];
+    }
+  }
+  return summary;
+
+}
+
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    sum: computeSum(state)
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Summary)
+

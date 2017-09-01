@@ -1,7 +1,7 @@
 import React from 'react';
-import {Button, Col, Row, Tag} from "antd";
 import store from "../redux/Store";
 import * as CounterActions from '../redux/CounterActions'
+import Counter from './Counter'
 
 class ClickCounter extends React.Component {
 
@@ -44,16 +44,8 @@ class ClickCounter extends React.Component {
 
   render() {
     return (
-      <Row align="middle">
-        <Col span={18}>
-          <Button onClick={this.increase}>+</Button>
-          <Button onClick={this.decrease}>-</Button>
-        </Col>
-        <Col span={6}>
-          <Tag color="green">{this.state.count}</Tag>
-        </Col>
-      </Row>
-    );
+      <Counter count={this.state.count} increase={this.increase} decrease={this.decrease} />
+    )
 
   }
 }

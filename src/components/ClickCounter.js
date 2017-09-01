@@ -1,45 +1,42 @@
-// @flow
-
 import React from 'react';
 import {Button, Col, Row, Tag} from "antd";
+import CounterStore from "../flux/CounterStore";
+import * as CounterActions from '../flux/CounterActions'
 
-type Props = {
-  initValue: string,
-  onValueChanged: Function
-}
-
-class ClickCounter extends React.Component<Props> {
-
+class ClickCounter extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      count: props.initValue
+      count: CounterStore.getCounterValues()[props.caption]
     }
+    this.onChange = this.onChange.bind(this)
     this.increase = this.increase.bind(this)
     this.decrease = this.decrease.bind(this)
   }
 
-  increase() {
-    this.updateValue(true)
+  onChange() {
     this.setState({
-      count: this.state.count + 1
+      count: CounterStore.getCounterValues()[this.props.caption]
     })
+  }
+
+  componentDidMount() {
+    CounterStore.addChangeListener(this.onChange)
+  }
+
+  componentWillUnmount() {
+    CounterStore.removeChangeListener(this.onChange)
+  }
+
+  increase() {
+    CounterActions.increment(this.props.caption)
   }
 
   decrease() {
-    this.updateValue(false)
-    this.setState({
-      count: this.state.count - 1
-    })
+    CounterActions.decrement(this.props.caption)
   }
 
-  updateValue(isIncrease: boolean) {
-    const preValue = this.state.count
-    const nextValue = isIncrease ? preValue + 1 : preValue - 1
-
-    this.props.onValueChanged(preValue, nextValue)
-  }
 
   render() {
     return (

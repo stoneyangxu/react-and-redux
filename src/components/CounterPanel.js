@@ -28,9 +28,9 @@ class CounterPanel extends React.Component {
     return (
       <div>
         <Card title={this.state.sum} bordered={false} style={{width: 300}}>
-          <ClickCounter initValue={this.initValues[0]} onValueChanged={this.updateValue}/>
-          <ClickCounter initValue={this.initValues[1]} onValueChanged={this.updateValue}/>
-          <ClickCounter initValue={this.initValues[2]} onValueChanged={this.updateValue}/>
+          <ClickCounter caption="first"/>
+          <ClickCounter caption="second"/>
+          <ClickCounter caption="third"/>
         </Card>
       </div>
     )

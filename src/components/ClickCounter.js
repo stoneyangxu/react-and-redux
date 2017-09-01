@@ -1,40 +1,44 @@
 import React from 'react';
 import {Button, Col, Row, Tag} from "antd";
-import CounterStore from "../flux/CounterStore";
-import * as CounterActions from '../flux/CounterActions'
+import store from "../redux/Store";
+import * as CounterActions from '../redux/CounterActions'
 
 class ClickCounter extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      count: CounterStore.getCounterValues()[props.caption]
+      count: this.getOwnState()
     }
     this.onChange = this.onChange.bind(this)
     this.increase = this.increase.bind(this)
     this.decrease = this.decrease.bind(this)
   }
 
+  getOwnState() {
+    return store.getState()[this.props.caption]
+  }
+
   onChange() {
     this.setState({
-      count: CounterStore.getCounterValues()[this.props.caption]
+      count: this.getOwnState()
     })
   }
 
   componentDidMount() {
-    CounterStore.addChangeListener(this.onChange)
+    store.subscribe(this.onChange)
   }
 
   componentWillUnmount() {
-    CounterStore.removeChangeListener(this.onChange)
+    store.unsubscribe(this.onChange)
   }
 
   increase() {
-    CounterActions.increment(this.props.caption)
+    store.dispatch(CounterActions.increment(this.props.caption))
   }
 
   decrease() {
-    CounterActions.decrement(this.props.caption)
+    store.dispatch(CounterActions.decrement(this.props.caption))
   }
 
 

@@ -1,9 +1,7 @@
-// @flow
-
 import React from 'react';
 import {Card} from "antd";
 import ClickCounter from "./ClickCounter";
-import SummaryStore from "../flux/SummaryStore";
+import store from "../redux/Store";
 
 class CounterPanel extends React.Component {
 
@@ -11,22 +9,35 @@ class CounterPanel extends React.Component {
     super(props)
 
     this.state = {
-      sum: SummaryStore.getSummary()
+      sum: this.getOwnState()
     }
     this.updateValue = this.updateValue.bind(this)
   }
 
+  getOwnState() {
+    const counterValues = store.getState()
+    let summary = 0;
+
+    for (const key in counterValues) {
+      if (counterValues.hasOwnProperty(key)) {
+        summary += counterValues[key];
+      }
+    }
+    return summary;
+
+  }
+
   componentDidMount() {
-    SummaryStore.addChangeListener(this.updateValue)
+    store.subscribe(this.updateValue)
   }
 
   componentWillUnmount() {
-    SummaryStore.removeChangeListener(this.updateValue)
+    store.unsubscribe(this.updateValue)
   }
 
   updateValue() {
     this.setState({
-      sum: SummaryStore.getSummary()
+      sum: this.getOwnState()
     })
   }
 

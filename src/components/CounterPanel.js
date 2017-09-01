@@ -3,24 +3,30 @@
 import React from 'react';
 import {Card} from "antd";
 import ClickCounter from "./ClickCounter";
+import SummaryStore from "../flux/SummaryStore";
 
 class CounterPanel extends React.Component {
 
   constructor(props) {
     super(props)
 
-    this.initValues = [1, 10, 100]
-    const sum = this.initValues.reduce((a, b) => a + b, 0)
     this.state = {
-      sum: sum
+      sum: SummaryStore.getSummary()
     }
     this.updateValue = this.updateValue.bind(this)
   }
 
-  updateValue(preValue, nextValue) {
-    const increase = nextValue - preValue
+  componentDidMount() {
+    SummaryStore.addChangeListener(this.updateValue)
+  }
+
+  componentWillUnmount() {
+    SummaryStore.removeChangeListener(this.updateValue)
+  }
+
+  updateValue() {
     this.setState({
-      sum: this.state.sum + increase
+      sum: SummaryStore.getSummary()
     })
   }
 

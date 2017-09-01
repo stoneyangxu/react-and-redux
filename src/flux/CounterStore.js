@@ -11,26 +11,32 @@ const counterValues = {
 }
 
 const CounterStore = Object.assign({}, EventEmitter.prototype, {
-  getCounterValues: () => counterValues,
-  emitChange: () => {
-    this.emitChange(CHANGE_EVENT)
+  getCounterValues: function() {
+    return counterValues;
   },
-  addChangeListener: (callback) => {
-    this.on(CHANGE_EVENT, callback)
+
+  emitChange: function() {
+    this.emit(CHANGE_EVENT);
   },
-  removeChangeListener: (callback) => {
-    this.removeListener(CHANGE_EVENT, callback)
+
+  addChangeListener: function(callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
+
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
   }
-})
+
+});
 
 CounterStore.dispatchToken = AppDispatcher.register((action) => {
   if (action.type === ActionTypes.INCREMENT) {
-    counterValues[action.caption]++
-    CounterStore.emitChange()
+    counterValues[action.caption] ++;
+    CounterStore.emitChange();
   } else if (action.type === ActionTypes.DECREMENT) {
-    counterValues[action.caption]--
-    CounterStore.emitChange()
+    counterValues[action.caption] --;
+    CounterStore.emitChange();
   }
-})
+});
 
 export default CounterStore;
